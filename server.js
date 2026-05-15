@@ -220,7 +220,14 @@ const html = `
 
         let username = "";
 
-        const ws = new WebSocket("ws://127.0.0.1:3000");
+        const protocol =
+                location.protocol === "https:"
+                ? "wss:"
+                : "ws:";
+            
+            const ws = new WebSocket(
+                \`\${protocol}//\${location.host}\`
+            );
 
         ws.onopen = () => {
 
