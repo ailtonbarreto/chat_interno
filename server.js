@@ -220,7 +220,7 @@ const html = `
 
         let username = "";
 
-        const ws = new WebSocket(\`ws://http://127.0.0.1/}\`);
+        const ws = new WebSocket("ws://127.0.0.1:3000");
 
         ws.onopen = () => {
 
