@@ -3,14 +3,14 @@ Chat Interno com WebSocket
 Sistema de chat em tempo real desenvolvido com Node.js, Express e WebSocket (ws), com interface moderna e responsiva.
 
 🚀 Funcionalidades
-Chat em tempo real
-Comunicação via WebSocket
-Interface moderna
-Login simples com nome de usuário
-Mensagens coloridas automaticamente para cada usuário
-Suporte para múltiplos clientes conectados
-Design responsivo
-Compatível com desktop e mobile
+Chat em tempo real;
+Comunicação via WebSocket;
+Interface moderna;
+Login simples com nome de usuário;
+Mensagens coloridas automaticamente para cada usuário;
+Suporte para múltiplos clientes conectados;
+Design responsivo;
+Compatível com desktop e mobile.
 
 🛠️ Tecnologias Utilizadas
 Node.js
