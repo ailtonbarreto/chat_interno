@@ -31,4 +31,6 @@ Quando um usuário envia uma mensagem:
 3. O servidor retransmite para os outros clientes conectados
 4. Cada cliente exibe a mensagem em tempo real
 
+-----------------------------------------------------------
+
 <img width="1892" height="1058" alt="image" src="https://github.com/user-attachments/assets/3a150fdb-36fc-479f-8baf-c9cbd6fd1138" />
