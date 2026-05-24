@@ -30,3 +30,5 @@ A mensagem é enviada ao servidor
 O servidor recebe a mensagem
 O servidor retransmite para os outros clientes conectados
 Cada cliente exibe a mensagem em tempo real
+
+<img width="1892" height="1058" alt="image" src="https://github.com/user-attachments/assets/3a150fdb-36fc-479f-8baf-c9cbd6fd1138" />
