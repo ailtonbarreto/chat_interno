@@ -68,7 +68,6 @@ const html = `
             border-radius:12px;
             outline:none;
             font-size:16px;
-            background:white;
         }
 
         button{
@@ -80,11 +79,6 @@ const html = `
             font-size:16px;
             cursor:pointer;
             font-weight:bold;
-            transition:.2s;
-        }
-
-        button:hover{
-            opacity:.9;
         }
 
         .chat-container{
@@ -124,39 +118,18 @@ const html = `
             gap:10px;
         }
 
-        .messages::-webkit-scrollbar{
-            width:5px;
-        }
-
-        .messages::-webkit-scrollbar-thumb{
-            background:#334155;
-            border-radius:10px;
-        }
-
         .message{
             max-width:80%;
             padding:12px;
             border-radius:15px;
             word-wrap:break-word;
             color:white;
-            animation:fade .2s ease;
-        }
-
-        @keyframes fade{
-            from{
-                opacity:0;
-                transform:translateY(10px);
-            }
-            to{
-                opacity:1;
-                transform:translateY(0);
-            }
         }
 
         .username{
             font-size:12px;
             margin-bottom:5px;
-            opacity:.85;
+            opacity:.8;
             font-weight:bold;
         }
 
@@ -303,44 +276,61 @@ const html = `
         // PEDIR PERMISSÃO
         // =====================================
 
-        if("Notification" in window){
+        async function requestNotificationPermission(){
 
-            Notification.requestPermission()
-            .then(permission => {
+            if(
+                !("Notification" in window)
+            ){
+
+                alert(
+                    "Este navegador não suporta notificações."
+                );
+
+                return;
+
+            }
+
+            if(
+                Notification.permission ===
+                "granted"
+            ){
+
+                console.log(
+                    "Permissão já concedida"
+                );
+
+                return;
+
+            }
+
+            if(
+                Notification.permission !==
+                "denied"
+            ){
+
+                const permission =
+                    await Notification.requestPermission();
 
                 console.log(
                     "Permissão:",
                     permission
                 );
 
-            });
+                if(
+                    permission === "granted"
+                ){
 
-        }
+                    new Notification(
+                        "Notificações ativadas 🔔",
+                        {
+                            body:
+                                "Você receberá alertas de novas mensagens."
+                        }
+                    );
 
-        // =====================================
-        // SERVICE WORKER
-        // =====================================
+                }
 
-        if(
-            "serviceWorker" in navigator
-        ){
-
-            navigator.serviceWorker
-            .register(
-                "data:text/javascript,self.addEventListener('notificationclick',function(event){event.notification.close();clients.openWindow('/')})"
-            )
-            .then(() => {
-
-                console.log(
-                    "Service Worker registrado"
-                );
-
-            })
-            .catch(err => {
-
-                console.log(err);
-
-            });
+            }
 
         }
 
@@ -487,61 +477,22 @@ const html = `
             text
         ){
 
-            console.log(
-                "Tentando notificação..."
-            );
-
             if(
-                Notification.permission
-                === "granted"
+                Notification.permission ===
+                "granted"
             ){
 
-                navigator
-                .serviceWorker
-                ?.getRegistration()
-                .then(reg => {
+                new Notification(
+                    "Nova mensagem",
+                    {
+                        body:
+                            user +
+                            ": " +
+                            text,
 
-                    if(reg){
-
-                        reg.showNotification(
-                            "Nova mensagem",
-                            {
-                                body:
-                                    user +
-                                    ": " +
-                                    text,
-
-                                icon:
-                                    "https://cdn-icons-png.flaticon.com/512/5968/5968770.png",
-
-                                vibrate:
-                                    [200,100,200]
-                            }
-                        );
-
-                    }else{
-
-                        new Notification(
-                            "Nova mensagem",
-                            {
-                                body:
-                                    user +
-                                    ": " +
-                                    text,
-
-                                icon:
-                                    "https://cdn-icons-png.flaticon.com/512/5968/5968770.png"
-                            }
-                        );
-
+                        icon:
+                            "https://i.postimg.cc/sxX4J97L/Frame-7.png"
                     }
-
-                });
-
-            }else{
-
-                console.log(
-                    "Permissão negada"
                 );
 
             }
@@ -558,6 +509,16 @@ const html = `
                 JSON.parse(
                     event.data
                 );
+
+            // NÃO mostra notificação
+            // para quem enviou
+            if(
+                data.username === username
+            ){
+
+                return;
+
+            }
 
             addMessage(
                 data.username,
@@ -601,6 +562,9 @@ const html = `
             chatScreen.style.display =
                 "flex";
 
+            // PEDIR PERMISSÃO
+            requestNotificationPermission();
+
             input.focus();
 
         }
@@ -633,12 +597,6 @@ const html = `
                 username,
                 text,
                 "me"
-            );
-
-            // NOTIFICAÇÃO DA PRÓPRIA MSG
-            showNotification(
-                username,
-                text
             );
 
             ws.send(JSON.stringify({
